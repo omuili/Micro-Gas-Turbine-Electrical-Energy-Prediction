@@ -1,104 +1,125 @@
-# CSCA-5622-Supervised-Learning-Final-Project
+I'll update our README to include the actual model comparison table:
 
 # Micro Gas Turbine Electrical Energy Prediction
 
-## Regular HCGT (Gas Turbine) Engagement NiceVCRNet (or similar branding)
+## Project Overview
 
-This repository is for the 2025 STAT comprehensive Learning project. Real project is system-development featuring contributions to energy management applications and integrates MVG with applied machine learning methods.
+This repository contains a comprehensive machine learning approach for predicting the electrical power output of a 3-kilowatt micro gas turbine based on input control voltage. The project addresses the challenging task of modeling the temporal dynamics of gas turbines, particularly the time delay between input changes and output response.
 
-The goal is to predict the electrical power output of a 3-kilowatt micro gas turbine based on input control voltage. We use multiple deep learning: CNN, RNNs, GRU, LSTM, XGBoost, SVR, MLP models, etc. By making use of a dataset of 71,225 temporal data points, primarily time, input_voltage, and el_power. (~1.8-3.3 hours)
+## Dataset
 
-Keywords: time series prediction, electrical energy forecasting, temporal dynamics, control systems, lag modeling, deep learning, machine learning, turbine modeling, and real-time prediction. We employ advanced preprocessing like lag conversion, sequence chunking, and feature engineering to transform raw temporal data into a complete model.
+The dataset consists of 8 time series experiments (6 for training, 2 for testing) representing the gas turbine's behavior under diverse conditions. Each experiment contains:
+- Time (seconds)
+- Input control voltage (volts)
+- Electrical output power (watts)
 
-## Summary
+The time series vary in duration from 6,495 to 11,820 data points with a resolution of approximately 1 second, corresponding to approximately 1.8 to 3.3 hours.
 
-| Feature Extraction Method | Modeling/Classification Method | Dataset | Accuracy | r² Score | Loss/RMSE (watts) |
-|---|---|---|---|---|---|
-| Raw Input Voltage | K-means | Total | 0.53240 | 0.23865 | 847.712 |
-| Input Voltage + Lag(1) | XGBoost | Total | 0.78425 | 0.82376 | 377.894 |
-| Input Voltage + Lag(1,5,10) | XGBoost | Total | 0.81459 | 0.85272 | 344.774 |
-| Input Voltage + Moving Avg | Random Forest | Total | 0.82780 | 0.83713 | 361.825 |
-| LSTM + RNN | Sequential Model | Total | 0.86582 | 0.87714 | 314.883 |
-| LSTM + CNN + Moving Avg | Sequential Model | Total | 0.89815 | 0.89713 | 287.432 |
-| LSTM + CNN + Lag | Augmentation (Tuned seq) | Total | 0.87844 | 0.88212 | 308.511 |
-| LSTM + GRU | Augmentation (Tuned seq) | Total | 0.88030 | 0.88277 | 307.665 |
-| LSTM + GRU + Moving | Augmentation (Tuned seq) | Total | 0.91422 | 0.91735 | 258.066 |
-| LSTM + GRU + TIME | Augmentation (Tuned seq) | Total | 0.91760 | 0.91780 | 257.637 |
-| LSTM + MLP | Augmented (3D Chunking) | Total | 0.90708 | 0.90895 | 271.022 |
-| XGB | XGB | Total | 0.87875 | 0.87810 | 313.217 |
-| SVR | SVR | Test | 0.78242 | 0.78210 | - |
-| Linear | Linear | Test | 0.59883 | 0.59830 | - |
-| GB | GB | Test | 0.85764 | 0.86340 | - |
-| LGBM + GRU | SVR | Test | 0.87545 | 0.87340 | - |
-| LGBM + CNN | GB | Novel | 0.86639 | 0.86612 | - |
-| LGBM + RNN + Tuning | GB | Novel | 0.88690 | 0.89271 | - |
-| LGBM + RNN + Tuning | SVR | Novel | 0.87234 | 0.87500 | - |
+## Features
 
-The results of using different feature extraction, preprocessing methods, and modeling methods have been organized above. Among them, the method using LSTM+GRU+TIME features with augmentation (Tuned sequential) method has the best accuracy and r² score, while the LSTM+GRU+Moving technique had the lowest RMSE. These algorithms work as black-box yet carry effective flow characteristics integration at granular turbine behavior, and can effectively capture the time-sensitive nature of the system's temporal-lag in input-output response through complex architecture. (STAT-NP)
+- **Temporal feature engineering**: Lag features, moving averages, derivatives
+- **Advanced modeling**: Multiple ML algorithms for time-series prediction
+- **Comprehensive model comparison**: Testing and evaluation of 10 different algorithms
+- **3D visualization**: Interactive plots showing relationships between time, voltage, and power
+- **Hyperparameter optimization**: Fine-tuning for optimal performance
 
-Dynamically, modified net optimizes the absorption of the feature-space while reduces the latent variance. The recurrent approaches better handle the time-series aspect. Lag insertion has become critical to this architecture assembly, likely due to the micro gas turbine's inherent physical time delay of approximately 12-18 seconds for reaction to input control voltage changes. Shorter window extraction can sometimes confuse performance, and the inclusion of 3D-velocity scale also indicates that a wider temporal sensitivity partly necessary for micro turbine modeling. The increased utilization of movement-direction over raw-signal is reflected by the effect in moving average performance. The explicit time steps also appear beneficial for state transitions in the gas turbine's behavior.
+## Results
 
-Appropriate parameter tuning can allow the model to better adapt to the specific characteristics of the dataset. From the peaks in the table with optimized training parameters, tuning the input window parameters through cross-validation has proven effective.
+Our model comparison reveals that tree-based models perform best for this prediction task:
 
-## Architecture Diagram
+| Rank | Model | Train RMSE | Test RMSE | Train R² | Test R² | Train MAE | Test MAE |
+|------|-------|------------|-----------|----------|---------|-----------|----------|
+| 1 | XGBoost | 308.66 | 357.29 | 0.818 | 0.805 | 166.58 | 198.33 |
+| 2 | Random Forest | 308.65 | 359.85 | 0.818 | 0.802 | 166.57 | 202.15 |
+| 3 | MLP Regressor | 313.61 | 360.74 | 0.812 | 0.801 | 165.52 | 199.05 |
+| 4 | Linear Regression | 318.66 | 361.02 | 0.806 | 0.801 | 175.96 | 206.92 |
+| 5 | Ridge Regression | 318.86 | 361.20 | 0.806 | 0.801 | 174.87 | 204.97 |
+| 6 | Gradient Boosting | 309.11 | 362.62 | 0.817 | 0.799 | 167.25 | 205.79 |
+| 7 | LightGBM | 308.70 | 363.12 | 0.818 | 0.798 | 166.78 | 206.17 |
+| 8 | Lasso Regression | 327.23 | 368.96 | 0.795 | 0.792 | 182.58 | 207.19 |
+| 9 | ElasticNet | 333.81 | 373.96 | 0.787 | 0.786 | 207.47 | 231.14 |
+| 10 | SVR | 331.51 | 377.76 | 0.790 | 0.782 | 148.18 | 183.93 |
+
+**Best Performing Models**: XGBoost, Random Forest, MLP Regressor
+
+## Repository Structure
 
 ```
-                 Raw Temporal Data
-                        ▼
-        ┌───────────────┼───────────────┐
-        ▼               ▼               ▼
-   Feature Eng.    Preprocessing    Transformation
-        │               │               │
-        ▼               ▼               ▼
-┌───────────────┐ ┌──────────┐ ┌───────────────┐
-│Lag Features   │ │Scaling   │ │Time Windowing │
-│Moving Averages│ │Chunking  │ │3D Sequencing  │
-│Diff Features  │ │Filtering │ │State Detection│
-└───────┬───────┘ └────┬─────┘ └───────┬───────┘
-        │              │               │
-        └──────────────┼───────────────┘
-                       ▼
-              ┌─────────────────┐
-              │  Model Training │
-              └────────┬────────┘
-                       ▼
-      ┌────────────────┼────────────────┐
-      ▼                ▼                ▼
-┌───────────┐   ┌─────────────┐   ┌───────────┐
-│Traditional│   │Deep Learning│   │Ensembles  │
-└─────┬─────┘   └──────┬──────┘   └─────┬─────┘
-      ▼                ▼                ▼
-┌───────────┐   ┌─────────────┐   ┌───────────┐
-│Linear     │   │LSTM/GRU     │   │XGBoost    │
-│Ridge      │   │CNN          │   │RandomForest│
-│SVR        │   │MLP          │   │LightGBM   │
-└─────┬─────┘   └──────┬──────┘   └─────┬─────┘
-      │                │                │
-      └────────────────┼────────────────┘
-                       ▼
-                ┌─────────────┐
-                │Hyperparameter│
-                │Optimization  │
-                └──────┬───────┘
-                       ▼
-               ┌───────────────┐
-               │ Final Model   │
-               │ LSTM+GRU+TIME │
-               └───────────────┘
+micro-gas-turbine-prediction/
+├── data/
+│   ├── train.zip  # Training experiments
+│   └── test.zip   # Testing experiments
+├── notebooks/
+│   └── main_analysis.ipynb  # Complete analysis workflow
+├── src/
+│   ├── data_processing.py   # Data loading and preprocessing
+│   ├── feature_engineering.py  # Feature creation
+│   ├── models.py  # Model implementations
+│   └── visualization.py  # Plotting and visualization tools
+├── results/
+│   ├── figures/  # Generated plots and visualizations
+│   └── models/   # Saved model files
+├── README.md
+└── requirements.txt
 ```
 
-## Directions for Improvement
+## Key Findings
 
-* Explore more specialized data augmentation and selective preprocessing, particularly before training to enhance the model's generalization ability on new data
+1. Time delay between input voltage changes and power response averages around 12-18 seconds
+2. Feature engineering, particularly lag features, significantly improves prediction accuracy
+3. Tree-based models (XGBoost, Random Forest) outperform other methods for this application
+4. Different experiments show varying patterns, with some featuring rectangular changes and others showing continuous variations
 
-* Examine more effective methods of calculating discontinuously chunked embeddings to better visualize the time series of the data
+## Installation and Usage
 
-* Conduct more detailed and comprehensive parameter tuning to find the optimal model configuration
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/micro-gas-turbine-prediction.git
+cd micro-gas-turbine-prediction
 
-* Attempt to combine multiple feature extraction and classification/learning methods, such as ensemble approaches for improved reliability and accuracy
+# Install dependencies
+pip install -r requirements.txt
 
-* Add real-time prediction capabilities with feedback adaptation for continuous deployment in operational environments
+# Run the main analysis notebook
+jupyter notebook notebooks/main_analysis.ipynb
+```
 
-* Investigate approaches to handle more extreme operational conditions and edge cases not seen in the current dataset
+## Requirements
 
-* Implement a physics-informed neural network (PINN) layer to integrate domain knowledge of gas turbine dynamics
+- Python 3.8+
+- NumPy
+- Pandas
+- Matplotlib
+- Seaborn
+- Scikit-learn
+- XGBoost
+- LightGBM
+
+## Future Work
+
+- Real-time prediction system for operational environments
+- Integration of physics-informed neural networks (PINNs)
+- Exploration of anomaly detection for turbine monitoring
+- Improved visualization tools for time-series analysis
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Citation
+
+If you use this code or methodology in your research, please cite:
+
+```
+@software{gas_turbine_prediction,
+  author = {Your Name},
+  title = {Micro Gas Turbine Electrical Energy Prediction},
+  year = {2025},
+  url = {https://github.com/yourusername/micro-gas-turbine-prediction}
+}
+```
+
+## Acknowledgments
+
+- Dataset provided by the UC Irvine Machine Learning Repository
+- Original data collected by Pawel Bielski and Dustin Kottonau from Karlsruhe Institute of Technology
