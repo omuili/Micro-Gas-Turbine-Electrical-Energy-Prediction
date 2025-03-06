@@ -1,4 +1,4 @@
-# Micro Gas Turbine Electrical Energy Prediction
+# Micro Gas Turbine Electrical Energy Prediction: A Numerical Modeling Approach
 
 ## Project Overview
 
