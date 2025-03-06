@@ -1,5 +1,3 @@
-I'll update our README to include the actual model comparison table:
-
 # Micro Gas Turbine Electrical Energy Prediction
 
 ## Project Overview
