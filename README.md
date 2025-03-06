@@ -4,6 +4,8 @@
 
 This repository contains a comprehensive machine learning approach for predicting the electrical power output of a 3-kilowatt micro gas turbine based on input control voltage. The project addresses the challenging task of modeling the temporal dynamics of gas turbines, particularly the time delay between input changes and output response.
 
+![Micro Gas Turbine Electrical Energy Predictionl - Overview Image Placeholder](./images/anchor2.png)
+
 ## Dataset
 
 The dataset consists of 8 time series experiments (6 for training, 2 for testing) representing the gas turbine's behavior under diverse conditions. Each experiment contains:
